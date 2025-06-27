@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カレンダーWeb</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="hamburger-icon" id="hamburgerIcon">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <div id="digitalClock" class="clock-display"></div>
+            <canvas id="analogClock" class="clock-display analog-clock-canvas"></canvas>
+        </div>
+        <h1>カレンダーWeb</h1>
+        <div class="header-right">
+            <button class="search-button">🔍</button>
+        </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li class="sidebar-category">カレンダー機能</li>
+                <li><a href="#" data-action="showSection" data-target-section="calendar">カレンダー表示</a></li>
+                <li><a href="#" data-action="fullScreen">全画面</a></li>
+                <li><a href="#" data-action="datePicker">日付選択Web</a></li>
+                
+                <li class="sidebar-category">表示設定</li>
+                <li><a href="#" id="toggleDarkMode">ダークモード</a></li>
+                <li class="has-submenu">
+                    <a href="#">PC表示に固定</a>
+                    <ul class="submenu">
+                        <li><a href="#" data-action="forcePcView" data-width="992">PC (992px)</a></li>
+                        <li><a href="#" data-action="forcePcView" data-width="1280">PC (1280px)</a></li>
+                        <li><a href="#" data-action="forcePcView" data-width="1440">PC (1440px)</a></li>
+                        <li><a href="#" data-action="forcePcView" data-width="1920">PC (1920px)</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" id="toggleMobileView">モバイル表示に固定</a></li>
+                <li><a href="#" id="toggleAutoView">自動表示に戻す</a></li>
+
+                <li class="sidebar-category">時計設定</li>
+                <li class="has-submenu">
+                    <a href="#">デジタル時計スキン</a>
+                    <ul class="submenu" id="digitalClockSkinSubmenu">
+                        </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#">アナログ時計スキン</a>
+                    <ul class="submenu" id="analogClockSkinSubmenu">
+                        </ul>
+                </li>
+                 <li class="has-submenu">
+                    <a href="#">デジタル時計サイズ</a>
+                    <ul class="submenu" id="digitalClockSizeSubmenu">
+                        <li><a href="#" data-action="changeDigitalClockSize" data-size="small">小さく</a></li>
+                        <li><a href="#" data-action="changeDigitalClockSize" data-size="medium">標準</a></li>
+                        <li><a href="#" data-action="changeDigitalClockSize" data-size="large">大きく</a></li>
+                    </ul>
+                </li>
+                 <li class="has-submenu">
+                    <a href="#">アナログ時計サイズ</a>
+                    <ul class="submenu" id="analogClockSizeSubmenu">
+                        <li><a href="#" data-action="changeAnalogClockSize" data-size="small">小さく</a></li>
+                        <li><a href="#" data-action="changeAnalogClockSize" data-size="medium">標準</a></li>
+                        <li><a href="#" data-action="changeAnalogClockSize" data-size="large">大きく</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="sidebar-category">その他</li>
+                <li><a href="#" data-action="showSection" data-target-section="about">サイト概要</a></li>
+                <li><a href="#" data-action="showSection" data-target-section="feedback">ご意見コメント</a></li>
+                <li><a href="#" data-action="showSection" data-target-section="terms">免責事項</a></li>
+                <li><a href="#" data-action="onlineTools">オンラインツール</a></li>
+                <li><a href="#" data-action="futureFeature">今後追加予定</a></li>
+                <li class="divider"></li>
+                <li><a href="#" data-action="dummy">...</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main-content">
+        <div id="calendarSection" class="content-section active">
+            <div class="calendar-controls-top">
+                <div class="calendar-controls">
+                    <button id="prevMonth">&lt;</button>
+                    <h2 id="currentMonthYear"></h2>
+                    <button id="nextMonth">&gt;</button>
+                </div>
+            </div>
+            <div class="calendar-grid">
+                <div class="day-name">日</div>
+                <div class="day-name">月</div>
+                <div class="day-name">火</div>
+                <div class="day-name">水</div>
+                <div class="day-name">木</div>
+                <div class="day-name">金</div>
+                <div class="day-name">土</div>
+                </div>
+        </div>
+
+        <div id="feedbackSection" class="content-section">
+            <h2>ご意見・お問い合わせ</h2>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="name">お名前（任意）:</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="email">メールアドレス（任意）:</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="comment">コメント:</label>
+                    <textarea id="comment" name="comment" rows="8" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">送信</button>
+            </form>
+            <p class="feedback-note">※このフォームはデモ用です。実際にはコメントは送信されません。</p>
+        </div>
+
+        <div id="aboutSection" class="content-section">
+            <h2>サイト概要</h2>
+            <p>このサイトはカレンダー、メモ、時計、表示設定などの機能を備えたデモサイトです。</p>
+            <p>今後の機能拡張にご期待ください。</p>
+        </div>
+
+        <div id="termsSection" class="content-section">
+            <h2>免責事項</h2>
+            <p>本サイトの利用により生じた損害について、一切の責任を負いません。</p>
+            <p>メモ機能はブラウザのセッション中にのみ保存され、永続的なものではありません。</p>
+            <p>祝日データは手動で更新されており、正確性を保証するものではありません。</p>
+        </div>
+    </main>
+
+    <div id="memoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modalDate"></h3>
+            <div id="memosForDate">
+                </div>
+            <textarea id="memoInput" placeholder="新しいメモを入力してください..."></textarea>
+            <button id="addMemoButton">メモを追加</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>広告スペースなど</p>
+        <p id="currentDateTime"></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

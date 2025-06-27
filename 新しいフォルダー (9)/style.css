@@ -1,0 +1,818 @@
+/* 基本的なリセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5; /* Light mode default */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden; /* 横スクロールを防ぐ */
+    color: #333; /* Light mode default */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- Dark Mode Styles --- */
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+
+body.dark-mode .header,
+body.dark-mode .sidebar,
+body.dark-mode .main-content,
+body.dark-mode .modal-content {
+    background-color: #16213e;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+body.dark-mode .header h1,
+body.dark-mode .calendar-controls h2,
+body.dark-mode .modal-content h3,
+body.dark-mode #feedbackSection h2,
+body.dark-mode .form-group label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .hamburger-icon .bar,
+body.dark-mode .search-button {
+    background-color: #e0e0e0;
+    color: #e0e0e0;
+}
+
+body.dark-mode .sidebar nav ul li {
+    border-bottom-color: #2b3a5b;
+}
+
+body.dark-mode .sidebar nav ul li a {
+    color: #e0e0e0;
+}
+body.dark-mode .sidebar nav ul li a:hover {
+    background-color: #0f3460;
+}
+body.dark-mode .sidebar .sidebar-category {
+    color: #a0a0a0;
+}
+body.dark-mode .sidebar nav ul li.divider {
+    background-color: #2b3a5b;
+}
+
+body.dark-mode .sidebar .submenu { /* サブメニューもダークモード対応 */
+    background-color: #0d1627;
+    border-color: #2b3a5b;
+}
+body.dark-mode .sidebar .submenu li a {
+    color: #e0e0e0;
+}
+body.dark-mode .sidebar .submenu li a:hover {
+    background-color: #080f1b;
+}
+
+
+body.dark-mode .calendar-controls button {
+    background-color: #0f3460;
+}
+body.dark-mode .calendar-controls button:hover {
+    background-color: #0a2342;
+}
+
+body.dark-mode .day-name {
+    background-color: #2b3a5b;
+    color: #e0e0e0;
+}
+
+body.dark-mode .date-cell {
+    background-color: #16213e;
+    border-color: #2b3a5b;
+    color: #e0e0e0;
+}
+body.dark-mode .date-cell:hover {
+    background-color: #0f3460;
+}
+body.dark-mode .date-cell .date-number {
+    color: #e0e0e0;
+}
+
+body.dark-mode .date-cell.today {
+    background-color: #e94560; /* Dark mode primary accent */
+    border-color: #e94560;
+    color: white;
+}
+body.dark-mode .date-cell.today .date-number {
+    color: white;
+}
+
+body.dark-mode .date-cell.other-month {
+    background-color: #2c0e12; /* Dark mode muted other month */
+    color: #a0a0a0;
+    border-color: #57060e;
+}
+body.dark-mode .date-cell.other-month .date-number {
+    color: #a0a0a0;
+}
+body.dark-mode .date-cell .note-indicator {
+    color: #8c52ff; /* Dark mode indicator color */
+}
+
+/* Holiday color for both modes */
+.date-cell.holiday {
+    color: red; /* 明るい赤 */
+    font-weight: bold;
+}
+body.dark-mode .date-cell.holiday {
+    color: #ff6b6b; /* 暗い背景に映える赤 */
+}
+.holiday-name {
+    font-size: 10px;
+    color: #dc3545; /* 祝日名の色 */
+}
+body.dark-mode .holiday-name {
+    color: #ff8c8c;
+}
+
+.date-cell.saturday { /* 土曜日のデフォルト色 */
+    color: #0000ff; /* 青 */
+}
+body.dark-mode .date-cell.saturday {
+    color: #6a8aff; /* ダークモードでの青 */
+}
+
+body.dark-mode #memosForDate {
+    background-color: #0f3460;
+    border-color: #2b3a5b;
+}
+body.dark-mode .memo-item {
+    border-bottom-color: #2b3a5b;
+}
+body.dark-mode .memo-text {
+    color: #e0e0e0;
+}
+body.dark-mode .delete-memo-button {
+    background-color: #57060e;
+}
+body.dark-mode .delete-memo-button:hover {
+    background-color: #8c0c16;
+}
+
+body.dark-mode #memoInput {
+    background-color: #2b3a5b;
+    border-color: #444;
+    color: #e0e0e0;
+}
+body.dark-mode #memoInput::placeholder {
+    color: #a0a0a0;
+}
+
+body.dark-mode #addMemoButton,
+body.dark-mode .submit-button {
+    background-color: #8c52ff;
+}
+body.dark-mode #addMemoButton:hover,
+body.dark-mode .submit-button:hover {
+    background-color: #7b45e0;
+}
+
+body.dark-mode #feedbackForm input,
+body.dark-mode #feedbackForm textarea {
+    background-color: #2b3a5b;
+    border-color: #444;
+    color: #e0e0e0;
+}
+body.dark-mode #feedbackForm input::placeholder,
+body.dark-mode #feedbackForm textarea::placeholder {
+    color: #a0a0a0;
+}
+
+body.dark-mode .feedback-note {
+    color: #a0a0a0;
+}
+body.dark-mode .footer {
+    background-color: #0f3460;
+    color: #e0e0e0;
+}
+
+/* --- End Dark Mode Styles --- */
+
+
+.header {
+    background-color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 両端揃え */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* ハンバーガーと時計の間隔 */
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+    flex-grow: 1; /* 中央に寄せつつ可変幅 */
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.hamburger-icon {
+    width: 30px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.hamburger-icon .bar {
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* ハンバーガーアイコンのアニメーション */
+.hamburger-icon.open .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger-icon.open .bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-icon.open .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.search-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 15px;
+    color: #555;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+/* サイドバー（ハンバーガーメニュー） */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+    transition: right 0.3s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease;
+    z-index: 999;
+    padding-top: 70px;
+    overflow-y: auto;
+}
+
+.sidebar.open {
+    right: 0;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    border-bottom: 1px solid #eee;
+}
+
+.sidebar nav ul li:last-child {
+    border-bottom: none;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 15px 20px;
+    font-size: 16px;
+    transition: background-color 0.2s ease, color 0.3s ease;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar-category {
+    font-weight: bold;
+    padding: 15px 20px 5px;
+    color: #666;
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.sidebar nav ul li.divider {
+    height: 1px;
+    background-color: #ddd;
+    margin: 10px 0;
+    padding: 0;
+}
+
+/* サブメニュー */
+.has-submenu > a {
+    position: relative;
+}
+.has-submenu > a::after {
+    content: '▶';
+    font-size: 0.8em;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    transition: transform 0.2s ease;
+}
+.has-submenu.open > a::after {
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+.submenu {
+    list-style: none;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #f8f8f8;
+    border-top: 1px solid #eee;
+}
+body.dark-mode .submenu {
+    background-color: #0d1627;
+    border-top-color: #2b3a5b;
+}
+
+.has-submenu.open .submenu {
+    max-height: 200px; /* 開いた時の最大高さ */
+}
+
+.submenu li a {
+    padding-left: 40px; /* インデント */
+    font-size: 0.95em;
+    background-color: transparent; /* 親要素のホバーを引き継がない */
+}
+.submenu li a:hover {
+    background-color: #e5e5e5;
+}
+body.dark-mode .submenu li a:hover {
+    background-color: #080f1b;
+}
+
+
+/* オーバーレイ */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* メインコンテンツ */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 960px; /* コンテンツの最大幅を制限 (デフォルト) */
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 12px; /* 少し丸く */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 影を強化 */
+    z-index: 1;
+    transition: max-width 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* PC固定表示時の幅 */
+body.force-pc-layout .main-content {
+    max-width: var(--forced-width); /* JavaScriptで設定されるカスタムプロパティ */
+    margin: 20px auto;
+}
+/* main-contentに直接data-force-width属性が付く場合 (fallback) */
+.main-content[data-force-width] {
+    max-width: var(--forced-width);
+    margin: 20px auto;
+}
+
+
+.content-section {
+    display: none;
+    padding: 10px; /* 内部のパディング */
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* カレンダーセクション */
+.calendar-controls-top {
+    display: flex;
+    justify-content: center; /* 中央に配置 */
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 月送りボタンと月表示を中央に */
+    flex-grow: 1; /* 幅を広げる */
+}
+
+.calendar-controls button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.calendar-controls button:hover {
+    background-color: #0056b3;
+}
+
+.calendar-controls h2 {
+    font-size: 28px; /* 文字を大きく */
+    font-weight: 600;
+    color: #333;
+    margin: 0 20px; /* ボタンとタイトルの間隔を広げる */
+    transition: color 0.3s ease;
+}
+
+/* カレンダーグリッドのデザイン変更 */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px; /* 隙間を広げる */
+    padding: 5px; /* グリッド全体のパディング */
+}
+
+.day-name {
+    text-align: center;
+    font-weight: bold;
+    padding: 12px 0; /* パディングを増やす */
+    background-color: #e9ecef;
+    color: #555;
+    border-radius: 8px; /* 角を丸く */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.date-cell {
+    background-color: #fcfcfc; /* 白に近い背景 */
+    border: 1px solid #e0e0e0; /* 細いボーダー */
+    min-height: 120px; /* セルの高さを増やす */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px; /* パディングを増やす */
+    cursor: pointer;
+    border-radius: 10px; /* 角を丸く */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* 軽い影 */
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.date-cell:hover {
+    background-color: #e6f7ff; /* ホバー時の色変更 */
+    border-color: #99d6ff;
+    transform: translateY(-2px); /* 少し浮き上がるエフェクト */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.date-number {
+    font-weight: bold;
+    font-size: 22px; /* 日付の数字を大きく */
+    color: #333;
+    margin-bottom: 8px; /* 下部との間隔 */
+    transition: color 0.3s ease;
+}
+
+.date-cell.today {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+}
+
+.date-cell.today .date-number {
+    color: white;
+}
+
+.date-cell.other-month {
+    background-color: #f5f5f5; /* 前月・翌月の日付の背景 */
+    color: #a0a0a0;
+    border-color: #e8e8e8;
+    box-shadow: none;
+}
+body.dark-mode .date-cell.other-month {
+    background-color: #101525;
+    color: #808080;
+    border-color: #1a2235;
+}
+
+.date-cell.other-month .date-number {
+    color: #a0a0a0;
+}
+
+.date-cell .note-indicator {
+    font-size: 13px;
+    color: #007bff;
+    margin-top: auto;
+    text-align: right;
+    width: 100%;
+    padding-right: 5px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+
+/* メモモーダル (変更なし、既存のスタイルを維持) */
+.modal { /* ... */ }
+.modal-content { /* ... */ }
+.close-button { /* ... */ }
+#modalDate { /* ... */ }
+#memosForDate { /* ... */ }
+.memo-item { /* ... */ }
+.memo-text { /* ... */ }
+.delete-memo-button { /* ... */ }
+#memoInput { /* ... */ }
+#addMemoButton { /* ... */ }
+
+/* ご意見コメントフォーム (変更なし、既存のスタイルを維持) */
+#feedbackSection { /* ... */ }
+#feedbackSection h2 { /* ... */ }
+.form-group { /* ... */ }
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea { /* ... */ }
+.form-group textarea { /* ... */ }
+.submit-button { /* ... */ }
+.feedback-note { /* ... */ }
+
+/* フッター (変更なし、既存のスタイルを維持) */
+.footer { /* ... */ }
+
+/* --- Responsive Layout Control (PC/Mobile View Toggle) --- */
+
+/* デフォルトのPC最大幅 */
+.main-content[data-force-width] {
+    max-width: var(--forced-width); /* JavaScriptで設定されるカスタムプロパティ */
+    margin: 20px auto;
+}
+
+/* Force PC View styles based on data attribute */
+body.force-pc-layout .main-content {
+    max-width: var(--forced-width);
+    margin: 20px auto;
+}
+body.force-pc-layout .date-cell {
+    min-height: 100px;
+}
+
+/* Force Mobile View */
+body.force-mobile-layout .main-content {
+    max-width: 480px; /* 強制的にモバイルの最大幅に */
+    margin: 10px auto; /* 画面端に寄せる */
+    padding: 10px;
+}
+body.force-mobile-layout .date-cell {
+    min-height: 70px; /* 強制的にモバイルのセルの高さに */
+    padding: 5px;
+}
+body.force-mobile-layout .date-number {
+    font-size: 14px;
+}
+body.force-mobile-layout .calendar-grid {
+    gap: 3px;
+}
+body.force-mobile-layout .header h1 {
+    font-size: 18px;
+}
+body.force-mobile-layout .calendar-controls h2 {
+    font-size: 18px;
+}
+body.force-mobile-layout .calendar-controls button {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+/* ハンバーガーメニューもモバイル幅に強制 */
+body.force-mobile-layout .sidebar {
+    width: 100%; 
+    right: -100%;
+}
+body.force-mobile-layout .sidebar.open {
+    right: 0;
+}
+
+
+/* --- Media Queries for standard responsive design (when not forced) --- */
+@media (max-width: 992px) {
+    body:not(.force-mobile-layout):not(.force-pc-layout) .main-content {
+        max-width: 90%;
+    }
+    body:not(.force-mobile-layout):not(.force-pc-layout) .date-cell {
+        min-height: 90px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ヘッダーの調整 */
+    .header {
+        padding: 10px 15px;
+    }
+    .header h1 {
+        font-size: 20px;
+        flex-grow: 0; /* 小さい画面では時計とハンバーガーに優先度 */
+        margin: 0 10px;
+    }
+    .header-left {
+        gap: 10px;
+    }
+    /* 時計のサイズ調整 - ここでメディアクエリのデフォルトサイズを調整 */
+    .digital-clock-size-small, .digital-clock-size-medium, .digital-clock-size-large {
+        font-size: 20px; /* 768px以下での標準サイズ */
+        min-width: 100px;
+        height: 45px;
+    }
+    .digital-clock-size-medium { /* mediumはそのまま */ }
+    .digital-clock-size-large {
+        font-size: 28px;
+        min-width: 140px;
+        height: 55px;
+    }
+    .digital-clock-size-small {
+        font-size: 14px;
+        min-width: 80px;
+        height: 35px;
+    }
+
+    /* アナログ時計のサイズ調整 */
+    .analog-clock-canvas.analog-size-small, .analog-clock-canvas.analog-size-medium, .analog-clock-canvas.analog-size-large {
+        width: 50px; /* 768px以下での標準サイズ */
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+    .analog-clock-canvas.analog-size-medium {}
+    .analog-clock-canvas.analog-size-large {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        min-height: 60px;
+    }
+    .analog-clock-canvas.analog-size-small {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .main-content {
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .date-cell {
+        min-height: 80px; /* 小さい画面でのセルの高さ */
+        padding: 5px;
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .date-number {
+        font-size: 16px;
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .sidebar {
+        width: 250px; /* 小さい画面でのサイドバー幅 */
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .modal-content {
+        width: 90%; /* モバイルでのモーダル幅 */
+        padding: 20px;
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .calendar-grid {
+        gap: 3px; /* セル間の隙間を狭く */
+    }
+    .calendar-controls h2 {
+        font-size: 22px;
+        margin: 0 10px;
+    }
+    .calendar-controls button {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 8px 10px;
+    }
+    .header h1 {
+        font-size: 16px;
+    }
+    .hamburger-icon {
+        width: 25px;
+        height: 18px;
+    }
+    /* 時計のサイズ調整 - ここでさらに小さいサイズに調整 */
+    .digital-clock-size-small, .digital-clock-size-medium, .digital-clock-size-large {
+        font-size: 16px; /* 480px以下での標準サイズ */
+        min-width: 80px;
+        height: 40px;
+    }
+    .digital-clock-size-medium {}
+    .digital-clock-size-large {
+        font-size: 22px;
+        min-width: 110px;
+        height: 50px;
+    }
+    .digital-clock-size-small {
+        font-size: 12px;
+        min-width: 60px;
+        height: 30px;
+    }
+
+    /* アナログ時計のサイズ調整 */
+    .analog-clock-canvas.analog-size-small, .analog-clock-canvas.analog-size-medium, .analog-clock-canvas.analog-size-large {
+        width: 40px; /* 480px以下での標準サイズ */
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    .analog-clock-canvas.analog-size-medium {}
+    .analog-clock-canvas.analog-size-large {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+    .analog-clock-canvas.analog-size-small {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        min-height: 30px;
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .date-cell {
+        min-height: 70px; /* さらに小さい画面でのセルの高さ */
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .date-number {
+        font-size: 14px;
+    }
+
+    body:not(.force-mobile-layout):not(.force-pc-layout) .sidebar {
+        width: 100%; /* スマホでは全幅に */
+        right: -100%;
+    }
+    body:not(.force-mobile-layout):not(.force-pc-layout) .sidebar.open {
+        right: 0;
+    }
+    body:not(.force-mobile-layout):not(.force-pc-layout) .sidebar nav ul li a {
+        padding: 12px 15px;
+        font-size: 15px;
+    }
+    .calendar-grid {
+        gap: 2px;
+    }
+    .day-name {
+        padding: 8px 0;
+    }
+    .date-cell {
+        padding: 5px;
+    }
+}
